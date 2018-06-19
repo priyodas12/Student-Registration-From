@@ -1,0 +1,66 @@
+package controller;
+
+import java.io.IOException;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+import beans.Student;
+
+
+
+@WebServlet(urlPatterns={"/reg"})
+
+public class StudentRegServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    public StudentRegServlet() {
+        
+    }
+    SessionFactory sf=null;
+	public void init(ServletConfig config) throws ServletException {
+		// TODO Auto-generated method stub
+		Configuration cfg=new Configuration();
+		cfg.configure("resources/hibernate.cfg.xml");
+		sf=cfg.buildSessionFactory();
+	}
+
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		String name=request.getParameter("name");
+		String email=request.getParameter("email");
+		int marks=Integer.parseInt(request.getParameter("marks"));
+		
+		Student s=new Student(0,name,email,marks);
+		
+		Session session=sf.openSession();
+		
+		Transaction trns=session.beginTransaction();
+		
+		int pk=(Integer)session.save(s);
+		
+		trns.commit();
+		
+		session.close();
+		
+		response.getWriter().println("REG Success  "+pk);
+	}
+
+	
+	public void destroy() {
+		// TODO Auto-generated method stub
+		sf.close();
+	}
+
+}
