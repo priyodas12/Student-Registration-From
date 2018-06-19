@@ -1,0 +1,14 @@
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+		<class name="beans.BookMovie" table="BookMovieTicket">
+			<id name="id" column="tid">
+				<generator class="increment"></generator>
+			</id>
+			<property name="movieName" column="tMovieName"/>
+			<property name="showTime" column="tShowTime"/>
+			<property name="seatNo" column="tSeatNo"/>
+		</class>
+</hibernate-mapping>
